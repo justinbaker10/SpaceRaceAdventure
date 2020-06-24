@@ -1,0 +1,21 @@
+body {
+    background-color: #171717;
+}
+
+.spaceship-container {
+    display: flex;
+    justify-content: center;
+}
+
+.spaceship {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0px;
+}
+
+.scorecard {
+    color: white;
+    text-align: center;
+}

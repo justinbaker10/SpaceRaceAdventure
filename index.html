@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin's SpaceRace Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="scorecard"><h1>0</h1></div>
+    <div class="scoreboard">
+        <p class="scoretitle">Score</p><hr>
+        <div class="scorecard"><h1>0</h1></div>
+    </div>
     <div class="gameboard">
         <div class="spaceship-container">
             <div class="spaceship"><img src="img/spaceship.svg"></div>
         </div>
     </div>
-    <script src="space.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+    <script src="redux.js"></script>
+    <script src="render.js"></script>
 </body>
 </html>

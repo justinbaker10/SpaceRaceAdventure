@@ -1,5 +1,14 @@
 body {
+    background-image: url(img/spacebackground.jpg);
+    font-family: 'Press Start 2P', cursive;
+}
+
+.gameboard {
     background-color: #171717;
+    height: 600px;
+    width: 600px;
+    position: relative;
+    margin: auto;
 }
 
 .spaceship-container {
@@ -18,4 +27,17 @@ body {
 .scorecard {
     color: white;
     text-align: center;
+}
+
+.scoretitle {
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.scoreboard {
+    width: 200px;
+    margin: auto;
+    background-color: #171717;
+    border-radius: 5%;
 }

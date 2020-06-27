@@ -1,4 +1,5 @@
 let spaceShip = document.querySelector('.spaceship');
+let asteroidContainer = document.querySelector('.asteroid-container')
 let score = document.querySelector('.scorecard')
 store.subscribe(render)
 const theInitialAction = {type: 'INIT'}
@@ -15,6 +16,26 @@ window.addEventListener('keydown', (e) => {
 })
 
 function render () {
-    spaceShip.style.bottom = store.getState().spaceShipPosition + 'px'
-    score.innerHTML = '<h1>' + store.getState().score + '</h1>'
+    const state = store.getState()
+    spaceShip.style.bottom = state.spaceShipPosition + 'px'
+    score.innerHTML = '<h1>' + state.score + '</h1>'
+    asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
+}
+
+// This function takes asteroid data and returns asteroid html
+function renderAsteroid (asteroid) {
+    return `<img 
+        src="img/asteroid.svg" 
+        class="asteroids" 
+        style="left:${asteroid.posX - asteroid.size}px; 
+            bottom:${asteroid.posY}px; 
+            height:${asteroid.size}px; 
+            width:${asteroid.size}px;">`
+}
+
+requestAnimationFrame(myFunc);
+
+function myFunc () {
+    store.dispatch({type: 'TICK'})
+    requestAnimationFrame(myFunc)
 }

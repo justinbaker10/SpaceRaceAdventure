@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin's SpaceRace Adventure</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg" href="img/spaceship.svg">
+</head>
+<body>
+    <div class="wholegame">
+        <div class="gameboard">
+            <div class="asteroid-container"></div>
+            <div class="spaceship-container">
+                <div class="spaceship"><img src="img/spaceship.svg"></div>
+            </div>
+        </div>
+        <div class="gameinfo">
+            <div class="scoreboard">
+                <p class="scoretitle">Score</p><hr>
+                <div class="scorecard"><h1>0</h1></div>
+            </div>
+            <div class="livesboard">
+                <p class="scoretitle">Lives</p><hr>
+                <img class="onelife" src="img/spaceship.svg">
+                <img class="onelife" src="img/spaceship.svg">
+                <img class="onelife" src="img/spaceship.svg">
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+    <script src="redux.js"></script>
+    <script src="render.js"></script>
+</body>
+</html>

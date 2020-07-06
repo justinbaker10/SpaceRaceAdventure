@@ -10,17 +10,32 @@ body {
     width: 500px;
 }
 
-.menu-container {
+.menucontainer {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.mymenu {
+    border: 1px solid white;
+}
+
+.gametitle {
+    padding-top: 10px;
+}
+
+.startbutton {
+    padding-bottom: 10px;
 }
 
 .gameboard {
     background-color: #171717;
     height: 600px;
     width: 600px;
+    margin-left: auto;
     position: relative;
-    margin: auto;
     overflow: hidden;
 }
 
@@ -45,13 +60,15 @@ body {
 .scoretitle {
     color: white;
     text-align: center;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
 }
 
 .scoreboard {
     width: 200px;
-    margin: auto;
     background-color: #171717;
     border-radius: 5%;
+    margin-bottom: 10px;
 }
 
 .asteroids {
@@ -59,4 +76,28 @@ body {
     height: 50px;
     position: absolute;
     left: 0px;
+}
+
+.livesboard {
+    border-radius: 5%;
+    background-color: #171717;
+    width: 200px;
+    text-align: center;
+}
+
+.onelife {
+    width: 50px;
+}
+
+.gameinfo {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin-right: auto;
+    padding-left: 20px;
+}
+
+.wholegame {
+    display: flex;
+    padding-top: 40px;
 }

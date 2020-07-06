@@ -1,41 +1,143 @@
+// Specifies initial game state
 const initialState = {
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [],
     
 }
-// Spaceship position range = 0 (bottom) - 550px
 
+// Array of asteroid data
+// Minimum Asteroid posY must be >= 60
 initialState.asteroidArray = [
     {
-        size: 10,
-        posY: 50,
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
         posX: 0,
-        speed: .5,
+        speed: Math.random() * 2 + .3,
     },
     {
-        size: 70,
-        posY: 150,
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
         posX: 0,
-        speed: 2,
+        speed: Math.random() * 2 + .3,
     },
     {
-        size: 90,
-        posY: 250,
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
         posX: 0,
-        speed: 1,
-    }
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
+    {
+        size: Math.floor(Math.random() * 100) + 10,
+        posY: Math.floor(Math.random() * 500) + 50,
+        posX: 0,
+        speed: Math.random() * 2 + .3,
+    },
 ]
 
-// if(newState.spaceShipPosition === newState.asteroidPosition) {
-//     newState.spaceShipPosition = 0
-// }
-
+// Sets up game variables
 const store = Redux.createStore(reducer)
 const topOfTheGameBoardpx = 550;
 const widthOfTheGameboard = 550;
 const maxAsteroidXValue = widthOfTheGameboard + 200;
 
+// Updates game data (state)
 function reducer (oldState, action) {
     if(oldState === undefined) oldState = initialState
     const newState = deepCopy(oldState)
@@ -47,12 +149,15 @@ function reducer (oldState, action) {
                 asteroid.posX = asteroid.posX + asteroid.speed
                 newAsteroids.push(asteroid)
             }
+            if(asteroid.posX > maxAsteroidXValue) {
+                asteroid.posX = 0
+            }
             return newAsteroids
         },[])
     }
 
     if(action.type === 'MOVE_UP') {
-        newState.spaceShipPosition = newState.spaceShipPosition + 10
+        newState.spaceShipPosition = newState.spaceShipPosition + 15
         if(newState.spaceShipPosition > topOfTheGameBoardpx) {
             newState.spaceShipPosition = 0
             newState.score = newState.score + 1
@@ -60,7 +165,7 @@ function reducer (oldState, action) {
     }
 
     else if(action.type === 'MOVE_DOWN') {
-        newState.spaceShipPosition = newState.spaceShipPosition - 10
+        newState.spaceShipPosition = newState.spaceShipPosition - 15
         if(newState.spaceShipPosition < 0) {
             newState.spaceShipPosition = 0
         }

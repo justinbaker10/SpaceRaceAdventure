@@ -2,6 +2,7 @@
 let spaceShip = document.querySelector('.spaceship');
 let asteroidContainer = document.querySelector('.asteroid-container')
 let score = document.querySelector('.scorecard')
+let asteroidBox = document.querySelector('.asteroidBox')
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -19,12 +20,21 @@ window.addEventListener('keydown', (e) => {
     }
 })
 
+console.log(asteroidBox)
+
 // Rendering data (state) from the store to update game
 function render () {
     const state = store.getState()
     spaceShip.style.bottom = state.spaceShipPosition + 'px'
     score.innerHTML = '<h1>' + state.score + '</h1>'
     asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
+    if(state.asteroidBox) {
+    asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'
+    asteroidBox.style.height = Math.floor(state.asteroidBox.y2 - state.asteroidBox.y1) + 'px'
+    asteroidBox.style.left = Math.floor(state.asteroidBox.x1) + 'px'
+    asteroidBox.style.width = Math.floor(state.asteroidBox.x2 - state.asteroidBox.x1) + 'px'
+    asteroidBox.style.backgroundColor = 'red'
+    }
 }
 
 // This function takes asteroid data and returns asteroid html

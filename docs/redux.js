@@ -2,139 +2,60 @@
 const initialState = {
     score: 0,
     spaceShipPosition: 0,
-    asteroidArray: [],
+    asteroidArray: [createNewAsteroid()],
     
 }
 
-// Array of asteroid data
-// Minimum Asteroid posY must be >= 60
-initialState.asteroidArray = [
-    {
+function createNewAsteroid () {
+    return  {
         size: Math.floor(Math.random() * 100) + 10,
         posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
+        posX: Math.floor(Math.random() * 500),
         speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-    {
-        size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
-        speed: Math.random() * 2 + .3,
-    },
-]
+    }
+}
+
+function createAsteroidArray (score) {
+    const asteroidArray = []
+    for (i = 0; i < score; i++) {
+        asteroidArray.push(createNewAsteroid())
+    }
+    return asteroidArray
+}
+
+function hasOverlap (box1, box2) {
+    return box1.x1 < box2.x2 &&
+           box1.x2 > box2.x1 &&
+           box1.y1 < box2.y2 &&
+           box1.y2 > box2.y1
+}
+
+function getSpaceshipBox (state) {
+    return {
+        x1: widthOfTheGameboard / 2 - widthOfSpaceship / 2,
+        x2: widthOfTheGameboard / 2 + widthOfSpaceship / 2,
+        y1: topOfTheGameBoardpx - state.spaceShipPosition,
+        y2: topOfTheGameBoardpx - state.spaceShipPosition + heightOfSpaceship
+    }
+}
+
+
+function getAsteroidBox (state, asteroidIndex) {
+    const theAsteroid = state.asteroidArray[asteroidIndex]
+    return {
+        x1: theAsteroid.posX - theAsteroid.size,
+        x2: theAsteroid.posX,
+        y1: topOfTheGameBoardpx - theAsteroid.posY,
+        y2: topOfTheGameBoardpx - theAsteroid.posY + theAsteroid.size
+    }
+}
 
 // Sets up game variables
 const store = Redux.createStore(reducer)
 const topOfTheGameBoardpx = 550;
 const widthOfTheGameboard = 550;
+const widthOfSpaceship = 50;
+const heightOfSpaceship = 50;
 const maxAsteroidXValue = widthOfTheGameboard + 200;
 
 // Updates game data (state)
@@ -154,6 +75,11 @@ function reducer (oldState, action) {
             }
             return newAsteroids
         },[])
+        newState.asteroidBox = getAsteroidBox(newState, 0)
+        if(hasOverlap(getSpaceshipBox(newState), getAsteroidBox(newState, 0))) {
+            console.log(newState.asteroidBox)
+            alert("I died...")
+        }
     }
 
     if(action.type === 'MOVE_UP') {
@@ -161,6 +87,7 @@ function reducer (oldState, action) {
         if(newState.spaceShipPosition > topOfTheGameBoardpx) {
             newState.spaceShipPosition = 0
             newState.score = newState.score + 1
+            newState.asteroidArray = createAsteroidArray(newState.score)
         }
     }
 

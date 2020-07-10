@@ -3,7 +3,7 @@ const initialState = {
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [createNewAsteroid()],
-    
+
 }
 
 function createNewAsteroid () {
@@ -32,8 +32,8 @@ function hasOverlap (box1, box2) {
 
 function getSpaceshipBox (state) {
     return {
-        x1: widthOfTheGameboard / 2 - widthOfSpaceship / 2,
-        x2: widthOfTheGameboard / 2 + widthOfSpaceship / 2,
+        x1: (widthOfTheGameboard / 2) - (widthOfSpaceship / 2),
+        x2: (widthOfTheGameboard / 2) + (widthOfSpaceship / 2),
         y1: topOfTheGameBoardpx - state.spaceShipPosition,
         y2: topOfTheGameBoardpx - state.spaceShipPosition + heightOfSpaceship
     }
@@ -76,6 +76,7 @@ function reducer (oldState, action) {
             return newAsteroids
         },[])
         newState.asteroidBox = getAsteroidBox(newState, 0)
+        newState.shipBox = getSpaceshipBox(newState)
         if(hasOverlap(getSpaceshipBox(newState), getAsteroidBox(newState, 0))) {
             console.log(newState.asteroidBox)
             alert("I died...")
@@ -97,7 +98,7 @@ function reducer (oldState, action) {
             newState.spaceShipPosition = 0
         }
     }
-    
+
     return newState
 }
 

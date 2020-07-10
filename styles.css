@@ -100,7 +100,8 @@ body {
     padding-top: 40px;
 }
 
-.asteroidBox {
+.asteroid-box,.ship-box {
     position: absolute;
     display: inline-block;
+    background: red;
 }

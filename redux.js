@@ -10,7 +10,7 @@ function createNewAsteroid () {
     return  {
         size: Math.floor(Math.random() * 100) + 10,
         posY: Math.floor(Math.random() * 500) + 50,
-        posX: Math.floor(Math.random() * 500),
+        posX: 0,
         speed: Math.random() * 2 + .3,
     }
 }
@@ -21,6 +21,15 @@ function createAsteroidArray (score) {
         asteroidArray.push(createNewAsteroid())
     }
     return asteroidArray
+}
+
+function hasSpaceshipCollided (state) {
+    for(i = 0; i < state.asteroidArray.length; i++) {
+        if(hasOverlap(getSpaceshipBox(state), getAsteroidBox(state, i))) {
+            return true
+        }
+    }
+    return false
 }
 
 function hasOverlap (box1, box2) {
@@ -34,8 +43,8 @@ function getSpaceshipBox (state) {
     return {
         x1: (widthOfTheGameboard / 2) - (widthOfSpaceship / 2),
         x2: (widthOfTheGameboard / 2) + (widthOfSpaceship / 2),
-        y1: topOfTheGameBoardpx - state.spaceShipPosition,
-        y2: topOfTheGameBoardpx - state.spaceShipPosition + heightOfSpaceship
+        y1: topOfTheGameBoardpx - state.spaceShipPosition - heightOfSpaceship,
+        y2: topOfTheGameBoardpx - state.spaceShipPosition
     }
 }
 
@@ -45,15 +54,15 @@ function getAsteroidBox (state, asteroidIndex) {
     return {
         x1: theAsteroid.posX - theAsteroid.size,
         x2: theAsteroid.posX,
-        y1: topOfTheGameBoardpx - theAsteroid.posY,
-        y2: topOfTheGameBoardpx - theAsteroid.posY + theAsteroid.size
+        y1: topOfTheGameBoardpx - theAsteroid.posY - theAsteroid.size,
+        y2: topOfTheGameBoardpx - theAsteroid.posY
     }
 }
 
 // Sets up game variables
 const store = Redux.createStore(reducer)
-const topOfTheGameBoardpx = 550;
-const widthOfTheGameboard = 550;
+const topOfTheGameBoardpx = 600;
+const widthOfTheGameboard = 600;
 const widthOfSpaceship = 50;
 const heightOfSpaceship = 50;
 const maxAsteroidXValue = widthOfTheGameboard + 200;
@@ -77,12 +86,12 @@ function reducer (oldState, action) {
         },[])
         newState.asteroidBox = getAsteroidBox(newState, 0)
         newState.shipBox = getSpaceshipBox(newState)
-        if(hasOverlap(getSpaceshipBox(newState), getAsteroidBox(newState, 0))) {
+        if(hasSpaceshipCollided(newState)) {
             console.log(newState.asteroidBox)
-            alert("I died...")
+            newState.iDied = true
         }
     }
-
+    
     if(action.type === 'MOVE_UP') {
         newState.spaceShipPosition = newState.spaceShipPosition + 15
         if(newState.spaceShipPosition > topOfTheGameBoardpx) {

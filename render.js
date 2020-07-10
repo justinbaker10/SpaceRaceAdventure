@@ -29,6 +29,7 @@ function render () {
     spaceShip.style.bottom = state.spaceShipPosition + 'px'
     score.innerHTML = '<h1>' + state.score + '</h1>'
     asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
+    /*
     if(state.asteroidBox) {
       asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'
       asteroidBox.style.height = Math.floor(state.asteroidBox.y2 - state.asteroidBox.y1) + 'px'
@@ -41,6 +42,12 @@ function render () {
       shipBox.style.left = Math.floor(state.shipBox.x1) + 'px'
       shipBox.style.width = Math.floor(state.shipBox.x2 - state.shipBox.x1) + 'px'
     }
+    */
+   if(state.iDied) {
+       requestAnimationFrame(function() {
+           alert('I died..')
+       })
+   }
 }
 
 // This function takes asteroid data and returns asteroid html

@@ -83,7 +83,20 @@ body {
     text-align: center;
 }
 
+.firstlife {
+    width: 50px;
+}
+
+.secondlife {
+    width: 50px;
+}
+
+.thirdlife {
+    width: 50px;
+}
+
 .onelife {
+    display: inline;
     width: 50px;
 }
 

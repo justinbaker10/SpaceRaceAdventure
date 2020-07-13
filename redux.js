@@ -3,7 +3,7 @@ const initialState = {
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [createNewAsteroid()],
-
+    lives: 3
 }
 
 function createNewAsteroid () {
@@ -89,6 +89,7 @@ function reducer (oldState, action) {
         if(hasSpaceshipCollided(newState)) {
             console.log(newState.asteroidBox)
             newState.iDied = true
+            newState.spaceShipPosition = 0
         }
     }
     

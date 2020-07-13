@@ -4,6 +4,9 @@ let asteroidContainer = document.querySelector('.asteroid-container')
 let score = document.querySelector('.scorecard')
 let asteroidBox = document.querySelector('.asteroid-box')
 let shipBox = document.querySelector('.ship-box')
+let lifeOne = document.querySelector('.firstlife')
+let lifeTwo = document.querySelector('.secondlife')
+let lifeThree = document.querySelector('.thirdlife')
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -29,6 +32,9 @@ function render () {
     spaceShip.style.bottom = state.spaceShipPosition + 'px'
     score.innerHTML = '<h1>' + state.score + '</h1>'
     asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
+    lifeOne.innerHTML = `<img src="img/spaceship.svg" class="onelife">`
+    lifeTwo.innerHTML = `<img src="img/spaceship.svg" class="onelife">`
+    lifeThree.innerHTML = `<img src="img/spaceship.svg" class="onelife">`
     /*
     if(state.asteroidBox) {
       asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'
@@ -45,7 +51,11 @@ function render () {
     */
    if(state.iDied) {
        requestAnimationFrame(function() {
-           alert('I died..')
+           lifeOne.innerHTML = `<img src="img/spaceship.svg" class="onelife" visibility: hidden;>`
+           lives--
+           if(lives = 0) {
+               alert("Game over...")
+           }
        })
    }
 }
@@ -60,6 +70,7 @@ function renderAsteroid (asteroid) {
             height:${asteroid.size}px;
             width:${asteroid.size}px;">`
 }
+
 
 // Animates asteroids
 requestAnimationFrame(myFunc);

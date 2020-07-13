@@ -3,7 +3,7 @@ const initialState = {
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [createNewAsteroid()],
-    lives: 3
+    lives: 3,
 }
 
 function createNewAsteroid () {
@@ -13,6 +13,14 @@ function createNewAsteroid () {
         posX: 0,
         speed: Math.random() * 2 + .3,
     }
+}
+
+function playerLives (lives) {
+    const livesArray = []
+    for (i = 0; i < initialState.lives; i++) {
+        livesArray.push(initialState.lives)
+    }
+    return livesArray
 }
 
 function createAsteroidArray (score) {
@@ -90,6 +98,7 @@ function reducer (oldState, action) {
             console.log(newState.asteroidBox)
             newState.iDied = true
             newState.spaceShipPosition = 0
+            initialState.lives = newState.lives--
         }
     }
     

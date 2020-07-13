@@ -4,7 +4,7 @@ let asteroidContainer = document.querySelector('.asteroid-container')
 let score = document.querySelector('.scorecard')
 let asteroidBox = document.querySelector('.asteroid-box')
 let shipBox = document.querySelector('.ship-box')
-let oneLife = document.querySelector('.onelife')
+let oneLife = document.querySelector('.lives')
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -30,7 +30,16 @@ function render () {
     spaceShip.style.bottom = state.spaceShipPosition + 'px'
     score.innerHTML = '<h1>' + state.score + '</h1>'
     asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
-    oneLife.innerHTML = playerLives(state.lives).map(renderLives)
+
+    //render lives
+    Array.from(oneLife.children).forEach( (lifeImg, idx) => {
+        if(idx < state.lives) {
+          lifeImg.src = "img/spaceship.svg"
+        } else {
+          lifeImg.src = "img/empty_life.svg"
+        }
+    })
+    // oneLife.innerHTML = playerLives(state.lives).map(renderLives).join('')
     /*
     if(state.asteroidBox) {
       asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'
@@ -46,7 +55,7 @@ function render () {
     }
     */
    if(state.iDied) {
-       requestAnimationFrame(function() {  
+       requestAnimationFrame(function() {
        })
    }
 }
@@ -60,12 +69,6 @@ function renderAsteroid (asteroid) {
             bottom:${asteroid.posY}px;
             height:${asteroid.size}px;
             width:${asteroid.size}px;">`
-}
-
-function renderLives () {
-    return `<img
-         src="img/spaceship.svg"
-         class="onelife">`
 }
 
 // Animates asteroids

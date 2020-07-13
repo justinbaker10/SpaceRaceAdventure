@@ -39,7 +39,6 @@ function render () {
           lifeImg.src = "img/empty_life.svg"
         }
     })
-    // oneLife.innerHTML = playerLives(state.lives).map(renderLives).join('')
     /*
     if(state.asteroidBox) {
       asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'

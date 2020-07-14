@@ -101,7 +101,7 @@ function reducer (oldState, action) {
             initialState.lives = newState.lives--
         }
     }
-    
+
     if(action.type === 'MOVE_UP') {
         newState.spaceShipPosition = newState.spaceShipPosition + 15
         if(newState.spaceShipPosition > topOfTheGameBoardpx) {
@@ -117,7 +117,7 @@ function reducer (oldState, action) {
             newState.spaceShipPosition = 0
         }
     }
-
+    
     return newState
 }
 

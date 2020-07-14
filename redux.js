@@ -9,8 +9,8 @@ const initialState = {
 function createNewAsteroid () {
     return  {
         size: Math.floor(Math.random() * 100) + 10,
-        posY: Math.floor(Math.random() * 500) + 50,
-        posX: 0,
+        posY: Math.floor(Math.random() * 500) + 60,
+        posX: Math.floor(Math.random() * 500),
         speed: Math.random() * 2 + .3,
     }
 }

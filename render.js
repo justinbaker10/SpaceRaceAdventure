@@ -5,6 +5,7 @@ let score = document.querySelector('.scorecard')
 let asteroidBox = document.querySelector('.asteroid-box')
 let shipBox = document.querySelector('.ship-box')
 let oneLife = document.querySelector('.lives')
+let gameOver = document.querySelector('.gameover')
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -30,6 +31,10 @@ function render () {
     spaceShip.style.bottom = state.spaceShipPosition + 'px'
     score.innerHTML = '<h1>' + state.score + '</h1>'
     asteroidContainer.innerHTML = state.asteroidArray.map(renderAsteroid).join('')
+    if(state.lives === 0) {
+      gameOver.style.display = "initial"
+      state.asteroidArray = []
+    }
 
     //render lives
     Array.from(oneLife.children).forEach( (lifeImg, idx) => {

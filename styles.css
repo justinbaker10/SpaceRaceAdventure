@@ -115,3 +115,40 @@ body {
     display: inline-block;
     background: red;
 }
+
+.gameoverbox {
+    display: flex;
+    align-items: center;
+    height: 600px;
+}
+
+.gameover {
+    border: solid 1px white;
+    text-align: center;
+    background-color: #2e2e2e;
+    padding: 0px 8px 0px 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.GOheading {
+    padding-top: 20px;
+}
+
+.GObutton {
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    color: #212529 !important;
+}
+
+.GObutton:hover {
+    text-decoration: none;
+}
+
+.gamebuttons {
+    padding-bottom: 20px;
+}
+
+hr {
+    border: 1px solid rgba(255, 255, 255, .5);
+}

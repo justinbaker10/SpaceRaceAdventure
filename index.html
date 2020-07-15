@@ -6,12 +6,23 @@
     <title>Justin's SpaceRace Adventure</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/svg" href="img/spaceship.svg">
 </head>
 <body>
     <div class="wholegame">
         <div class="gameboard">
+            <div class="gameoverbox">
+                <div class="gameover" style="display: none;">
+                    <h1 class="GOheading">Game Over!</h1>
+                    <p>So much universe, and so little time. - Terry Pratchett</p>
+                    <div class="gamebuttons">
+                    <button type="button" class="btn btn-outline-dark"><a href="homepage.html" class="GObutton">Main Menu</a></button>
+                    <button type="button" class="btn btn-outline-dark"><a href="index.html" class="GObutton">Restart</a></button>
+                    </div>
+                </div>
+            </div>
             <div class="asteroid-box"></div>
               <div class="ship-box"></div>
             <div class="asteroid-container"></div>
@@ -21,11 +32,11 @@
         </div>
         <div class="gameinfo">
             <div class="scoreboard">
-                <p class="scoretitle">Score</p><hr>
+                <p class="scoretitle">Score</p><hr class="scoreline">
                 <div class="scorecard"><h1>0</h1></div>
             </div>
             <div class="livesboard">
-                <p class="scoretitle">Lives</p><hr>
+                <p class="scoretitle">Lives</p><hr class="scoreline">
                 <div class="lives">
                   <img class="life-indicator" src="img/spaceship.svg">
                   <img class="life-indicator" src="img/spaceship.svg">

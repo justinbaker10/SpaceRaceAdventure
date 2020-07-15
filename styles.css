@@ -1,5 +1,9 @@
 body {
-    background-image: url(img/spacebackground.jpg);
+    background: url(img/spacebackground2.png) no-repeat center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
     font-family: 'Press Start 2P', cursive;
 }
 

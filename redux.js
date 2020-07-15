@@ -2,8 +2,9 @@
 const initialState = {
     score: 0,
     spaceShipPosition: 0,
-    asteroidArray: [createNewAsteroid()],
+    asteroidArray: [],
     lives: 3,
+    gameIsActive: true
 }
 
 function createNewAsteroid () {
@@ -14,6 +15,7 @@ function createNewAsteroid () {
         speed: Math.random() * 2 + .3,
     }
 }
+
 
 function playerLives (lives) {
     const livesArray = []
@@ -92,13 +94,17 @@ function reducer (oldState, action) {
             }
             return newAsteroids
         },[])
-        newState.asteroidBox = getAsteroidBox(newState, 0)
-        newState.shipBox = getSpaceshipBox(newState)
+        // Test code for collision hitboxes (assumes one asteroid in the asteroid array.)
+        // newState.asteroidBox = getAsteroidBox(newState, 0)
+        // newState.shipBox = getSpaceshipBox(newState)
+        
         if(hasSpaceshipCollided(newState)) {
-            console.log(newState.asteroidBox)
-            newState.iDied = true
             newState.spaceShipPosition = 0
-            initialState.lives = newState.lives--
+            newState.lives = newState.lives - 1
+            if(newState.lives === 0) {
+                newState.gameIsActive = false
+                newState.asteroidArray = []
+            }
         }
     }
 

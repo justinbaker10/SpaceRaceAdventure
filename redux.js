@@ -7,15 +7,36 @@ const initialState = {
     gameIsActive: true
 }
 
+// Asteroid size of size 109 moves at .4, Asteroid of size 10 moves at 5
+// m = -0.0465
+// b = 5.465
 function createNewAsteroid () {
+    const size = Math.floor(Math.random() * 100) + 10
     return  {
-        size: Math.floor(Math.random() * 100) + 10,
+        size: size,
         posY: Math.floor(Math.random() * 500) + 60,
         posX: Math.floor(Math.random() * 500),
-        speed: Math.random() * 2 + .3,
+        speed: -0.0465 * size + 5.465
     }
 }
 
+function linearRegression (x1, x2, y1, y2) {
+    const m = (y2-y1) / (x2-x1)
+    const b = y1 - m * x1
+    return function(x) {
+        return m * x + b
+    }
+}
+
+function calcAsteroidSpeed (size) {
+    const minSpeed = 0.5
+    const maxSpeed = 4
+    const minSize = 10
+    const maxSize = 109
+    const asteroidSpeedRegression = linearRegression(minSize, maxSize, minSpeed, maxSpeed)
+
+    return asteroidSpeedRegression(size)
+}
 
 function playerLives (lives) {
     const livesArray = []

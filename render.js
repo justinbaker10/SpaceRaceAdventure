@@ -6,6 +6,8 @@ let asteroidBox = document.querySelector('.asteroid-box')
 let shipBox = document.querySelector('.ship-box')
 let oneLife = document.querySelector('.lives')
 let gameOver = document.querySelector('.gameover')
+let gameBoard = document.querySelector('.gameboard')
+let shakeButton = document.querySelector('.shakebutton')
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -25,9 +27,6 @@ window.addEventListener('keydown', (e) => {
     }
 }})
 
-console.log(asteroidBox)
-
-
 // Rendering data (state) from the store to update game
 function render () {
     const state = store.getState()
@@ -46,20 +45,6 @@ function render () {
           lifeImg.src = "img/empty_life.svg"
         }
     })
-    /*
-    if(state.asteroidBox) {
-      asteroidBox.style.top = Math.floor(state.asteroidBox.y1) + 'px'
-      asteroidBox.style.height = Math.floor(state.asteroidBox.y2 - state.asteroidBox.y1) + 'px'
-      asteroidBox.style.left = Math.floor(state.asteroidBox.x1) + 'px'
-      asteroidBox.style.width = Math.floor(state.asteroidBox.x2 - state.asteroidBox.x1) + 'px'
-    }
-    if(state.shipBox) {
-      shipBox.style.top = Math.floor(state.shipBox.y1) + 'px'
-      shipBox.style.height = Math.floor(state.shipBox.y2 - state.shipBox.y1) + 'px'
-      shipBox.style.left = Math.floor(state.shipBox.x1) + 'px'
-      shipBox.style.width = Math.floor(state.shipBox.x2 - state.shipBox.x1) + 'px'
-    }
-    */
 }
 
 // This function takes asteroid data and returns asteroid html

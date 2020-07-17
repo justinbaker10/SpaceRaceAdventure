@@ -63,32 +63,38 @@ function hasSpaceshipCollided (state) {
     return false
 }
 
-function hasOverlap (box1, box2) {
-    return box1.x1 < box2.x2 &&
-           box1.x2 > box2.x1 &&
-           box1.y1 < box2.y2 &&
-           box1.y2 > box2.y1
-}
-
 function getSpaceshipBox (state) {
+    const theRadius = widthOfSpaceship / 2
     return {
-        x1: (widthOfTheGameboard / 2) - (widthOfSpaceship / 2),
-        x2: (widthOfTheGameboard / 2) + (widthOfSpaceship / 2),
-        y1: topOfTheGameBoardpx - state.spaceShipPosition - heightOfSpaceship,
-        y2: topOfTheGameBoardpx - state.spaceShipPosition
+        radius: theRadius,
+        x: widthOfTheGameboard / 2,
+        y: topOfTheGameBoardpx - state.spaceShipPosition - theRadius
     }
 }
 
 
 function getAsteroidBox (state, asteroidIndex) {
     const theAsteroid = state.asteroidArray[asteroidIndex]
+    const theRadius = theAsteroid.size / 2
     return {
-        x1: theAsteroid.posX - theAsteroid.size,
-        x2: theAsteroid.posX,
-        y1: topOfTheGameBoardpx - theAsteroid.posY - theAsteroid.size,
-        y2: topOfTheGameBoardpx - theAsteroid.posY
+        radius: theRadius,
+        x: theAsteroid.posX - theRadius,
+        y: topOfTheGameBoardpx - theAsteroid.posY - theRadius
     }
 }
+
+
+function hasOverlap (circle1, circle2) {
+    var dx = circle1.x - circle2.x;
+    var dy = circle1.y - circle2.y;
+    var distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < circle1.radius + circle2.radius) {
+        return true
+    }
+    return false
+}
+
 
 // Sets up game variables
 const store = Redux.createStore(reducer)

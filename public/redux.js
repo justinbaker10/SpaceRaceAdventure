@@ -1,10 +1,16 @@
 // Specifies initial game state
 const initialState = {
+  local: {
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [],
     lives: 3,
     gameIsActive: true
+  },
+  remote: {
+    asteroidArray: []
+  },
+  multiplayer: true
 }
 
 // Asteroid size of size 109 moves at .4, Asteroid of size 10 moves at 5
@@ -38,14 +44,6 @@ function calcAsteroidSpeed (size) {
     return asteroidSpeedRegression(size)
 }
 
-function playerLives (lives) {
-    const livesArray = []
-    for (i = 0; i < initialState.lives; i++) {
-        livesArray.push(initialState.lives)
-    }
-    return livesArray
-}
-
 function createAsteroidArray (score) {
     const asteroidArray = []
     for (i = 0; i < score; i++) {
@@ -54,27 +52,27 @@ function createAsteroidArray (score) {
     return asteroidArray
 }
 
-function hasSpaceshipCollided (state) {
-    for(i = 0; i < state.asteroidArray.length; i++) {
-        if(hasOverlap(getSpaceshipBox(state), getAsteroidBox(state, i))) {
+function hasSpaceshipCollided (playerState) {
+    for(i = 0; i < playerState.asteroidArray.length; i++) {
+        if(hasOverlap(getSpaceshipBox(playerState), getAsteroidBox(playerState, i))) {
             return true
         }
     }
     return false
 }
 
-function getSpaceshipBox (state) {
+function getSpaceshipBox (playerState) {
     const theRadius = widthOfSpaceship / 2
     return {
         radius: theRadius,
         x: widthOfTheGameboard / 2,
-        y: topOfTheGameBoardpx - state.spaceShipPosition - theRadius
+        y: topOfTheGameBoardpx - playerState.spaceShipPosition - theRadius
     }
 }
 
 
-function getAsteroidBox (state, asteroidIndex) {
-    const theAsteroid = state.asteroidArray[asteroidIndex]
+function getAsteroidBox (playerState, asteroidIndex) {
+    const theAsteroid = playerState.asteroidArray[asteroidIndex]
     const theRadius = theAsteroid.size / 2
     return {
         radius: theRadius,
@@ -110,7 +108,7 @@ function reducer (oldState, action) {
     const newState = deepCopy(oldState)
 
     if(action.type === 'TICK') {
-        newState.asteroidArray = newState.asteroidArray.reduce(function(newAsteroids, asteroid) {
+        newState.local.asteroidArray = newState.local.asteroidArray.reduce(function(newAsteroids, asteroid) {
             // Only keep this asteroid if is less than maxAsteroidXValue
             if(asteroid.posX < maxAsteroidXValue) {
                 asteroid.posX = asteroid.posX + asteroid.speed
@@ -121,36 +119,33 @@ function reducer (oldState, action) {
             }
             return newAsteroids
         },[])
-        // Test code for collision hitboxes (assumes one asteroid in the asteroid array.)
-        // newState.asteroidBox = getAsteroidBox(newState, 0)
-        // newState.shipBox = getSpaceshipBox(newState)
-        
-        if(hasSpaceshipCollided(newState)) {
-            newState.spaceShipPosition = 0
-            newState.lives = newState.lives - 1
-            if(newState.lives === 0) {
-                newState.gameIsActive = false
-                newState.asteroidArray = []
+
+        if(hasSpaceshipCollided(newState.local)) {
+            newState.local.spaceShipPosition = 0
+            newState.local.lives = newState.local.lives - 1
+            if(newState.local.lives === 0) {
+                newState.local.gameIsActive = false
+                newState.local.asteroidArray = []
             }
         }
     }
 
     if(action.type === 'MOVE_UP') {
-        newState.spaceShipPosition = newState.spaceShipPosition + 15
-        if(newState.spaceShipPosition > topOfTheGameBoardpx) {
-            newState.spaceShipPosition = 0
-            newState.score = newState.score + 1
-            newState.asteroidArray = createAsteroidArray(newState.score)
+        newState.local.spaceShipPosition = newState.local.spaceShipPosition + 15
+        if(newState.local.spaceShipPosition > topOfTheGameBoardpx) {
+            newState.local.spaceShipPosition = 0
+            newState.local.score = newState.local.score + 1
+            newState.local.asteroidArray = createAsteroidArray(newState.local.score)
         }
     }
 
     else if(action.type === 'MOVE_DOWN') {
-        newState.spaceShipPosition = newState.spaceShipPosition - 15
-        if(newState.spaceShipPosition < 0) {
-            newState.spaceShipPosition = 0
+        newState.local.spaceShipPosition = newState.local.spaceShipPosition - 15
+        if(newState.local.spaceShipPosition < 0) {
+            newState.local.spaceShipPosition = 0
         }
     }
-    
+
     return newState
 }
 

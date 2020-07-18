@@ -36,11 +36,13 @@ body {
 
 .gameboard {
     background-color: #171717;
+    border-radius: 2%;
     height: 600px;
     width: 600px;
-    margin-left: auto;
+    flex-shrink: 0;
     position: relative;
     overflow: hidden;
+    margin: 0 10px;
 }
 
 .spaceship-container {
@@ -70,10 +72,16 @@ body {
 
 .scoreboard {
     width: 200px;
+    height: 150px;
     background-color: #171717;
     padding: 10px;
     border-radius: 5%;
     margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.scorecard>p {
+  font-size: 2.7em;
 }
 
 .asteroids {
@@ -86,6 +94,7 @@ body {
     background-color: #171717;
     padding: 10px;
     width: 200px;
+    height: 150px;
     text-align: center;
 }
 
@@ -102,16 +111,18 @@ body {
 }
 
 .gameinfo {
+    margin: 0 10px;
+    width: 200px;
     display: flex;
-    align-items: flex-end;
     flex-direction: column;
-    margin-right: auto;
-    padding-left: 20px;
 }
 
 .wholegame {
     display: flex;
     padding-top: 40px;
+    justify-content: space-around;
+    width: 840px;
+    margin: 0 auto;
 }
 
 .asteroid-box,.ship-box {
@@ -164,4 +175,32 @@ body {
 
 hr {
     border: 1px solid rgba(255, 255, 255, .5);
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+.two-player {
+
+}
+
+.wholegame.remote {
+  flex-direction: row-reverse;
+}
+
+.two-player .wholegame .gameboard {
+
+}
+
+.two-player .wholegame .gameinfo {
+}
+
+.wholegame.remote {
+  display: none;
+}
+
+.two-player .wholegame.remote {
+  display: flex;
 }

@@ -1,16 +1,27 @@
 // Specifies initial game state
 const initialState = {
   local: {
+    name: '',
     score: 0,
     spaceShipPosition: 0,
     asteroidArray: [],
     lives: 3,
-    gameIsActive: true
+    gameIsOver: false
   },
-  remote: {
-    asteroidArray: []
-  },
-  multiplayer: true
+  remote: {},
+  waitingForPlayers: false,
+  matchIsOver: false,
+  multiplayer: null,
+  highScores: null
+}
+
+function gameIsActive (state) {
+  if(state.local.gameIsOver === false &&
+     state.waitingForPlayers === false &&
+     state.matchIsOver === false) {
+       return true
+  }
+  return false
 }
 
 // Asteroid size of size 109 moves at .4, Asteroid of size 10 moves at 5
@@ -107,7 +118,30 @@ function reducer (oldState, action) {
     if(oldState === undefined) oldState = initialState
     const newState = deepCopy(oldState)
 
+    if(action.type === 'INIT') {
+      if(action.gameID === null) {
+        newState.multiplayer = false
+      } else {
+        newState.waitingForPlayers = true
+        newState.multiplayer = true
+      }
+      if(action.playerName === null) {
+        newState.local.name = 'anon'
+      } else {
+        newState.local.name = action.playerName
+      }
+    }
+
+    if(action.type === 'START_MULTIPLAYER') {
+        newState.waitingForPlayers = false
+    }
+
+    if(action.type === 'UPDATE_HIGH_SCORES') {
+      newState.highScores = action.highScores
+    }
+
     if(action.type === 'TICK') {
+        newState.remote = action.remoteState
         newState.local.asteroidArray = newState.local.asteroidArray.reduce(function(newAsteroids, asteroid) {
             // Only keep this asteroid if is less than maxAsteroidXValue
             if(asteroid.posX < maxAsteroidXValue) {
@@ -124,7 +158,7 @@ function reducer (oldState, action) {
             newState.local.spaceShipPosition = 0
             newState.local.lives = newState.local.lives - 1
             if(newState.local.lives === 0) {
-                newState.local.gameIsActive = false
+                newState.local.gameIsOver = true
                 newState.local.asteroidArray = []
             }
         }

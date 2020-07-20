@@ -63,21 +63,26 @@ body {
     text-align: center;
 }
 
-.scoretitle {
+.info-title {
     color: white;
     text-align: center;
     font-family: 'Inconsolata', monospace;
     font-size: 20px;
 }
 
+.info-card {
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  width: 200px;
+  background-color: #171717;
+  padding: 10px;
+  border-radius: 5%;
+  margin-bottom: 10px;
+}
+
 .scoreboard {
-    width: 200px;
     height: 150px;
-    background-color: #171717;
-    padding: 10px;
-    border-radius: 5%;
-    margin-bottom: 10px;
-    flex-shrink: 0;
 }
 
 .scorecard>p {
@@ -90,12 +95,7 @@ body {
 }
 
 .livesboard {
-    border-radius: 5%;
-    background-color: #171717;
-    padding: 10px;
-    width: 200px;
     height: 150px;
-    text-align: center;
 }
 
 .lives {
@@ -125,19 +125,16 @@ body {
     margin: 0 auto;
 }
 
-.asteroid-box,.ship-box {
+.gameboard-overlay {
     position: absolute;
-    display: inline-block;
-    background: red;
-}
-
-.gameoverbox {
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     height: 600px;
 }
 
-.gameover {
+.overlay-message-box {
     border: solid 1px white;
     text-align: center;
     background-color: #2e2e2e;
@@ -147,8 +144,29 @@ body {
     color: white;
 }
 
-.GOheading {
-    padding-top: 20px;
+.overlay-message-heading {
+    padding: 20px 0;
+    margin: 0;
+}
+
+.high-scores {
+  margin-bottom: 20px;
+}
+
+.high-scores p {
+  margin: 0;
+}
+
+.high-scores p span:first-child {
+  display: inline-block;
+  width: 50px;
+  text-align: right;
+}
+
+.high-scores p span:last-child {
+  display: inline-block;
+  width: 220px;
+  text-align: right;
 }
 
 .GObutton {
@@ -182,6 +200,12 @@ hr {
   justify-content: center;
 }
 
+@media screen and (max-width:1680px) {
+  #root {
+    justify-content: flex-start;
+  }
+}
+
 .two-player {
 
 }
@@ -203,4 +227,50 @@ hr {
 
 .two-player .wholegame.remote {
   display: flex;
+}
+
+.name-card {
+  display: none;
+}
+
+.two-player .name-card {
+  display: block;
+  height: 120px;
+}
+
+.name {
+  margin-top: 10px;
+}
+
+.dot {
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+}
+
+.dot1 {
+  animation-delay: 0s;
+  anima
+}
+
+.dot2 {
+  animation-delay: .67s;
+}
+
+.dot3 {
+  animation-delay: 1.33s;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  51% {
+    opacity: 1;
+  }
 }

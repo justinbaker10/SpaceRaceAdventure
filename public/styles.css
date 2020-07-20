@@ -22,6 +22,30 @@ body {
     font-family: 'Press Start 2P', cursive;
 }
 
+.btn-outline-dark.selected {
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+
+.game-form {
+  margin-bottom: 20px;
+}
+
+.game-form>div {
+  margin-bottom: 20px;
+}
+
+.game-form span {
+  display: inline-block;
+  width:120px;
+  text-align: right;
+}
+
+.game-form input {
+  width: 200px;
+}
+
 .mymenu {
     border: 1px solid white;
 }
@@ -31,7 +55,7 @@ body {
 }
 
 .startbutton {
-    padding-bottom: 10px;
+    margin: 15px 0 20px;
 }
 
 .gameboard {

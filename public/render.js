@@ -45,6 +45,9 @@ function render () {
       if(state[playerID].gameIsActive === false) {
         gameNodes[playerID].gameOver.style.display = "initial"
       }
+      if(state[playerID].gameIsActive === false) {
+        gameNodes[playerID].gameBoard.classList.add('animate__animated', 'animate__shakeX')
+      }
 
       //render lives
       Array.from(gameNodes[playerID].lives.children).forEach( (lifeImg, idx) => {

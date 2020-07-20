@@ -81,6 +81,9 @@ function render () {
       } else {
         gameNodes.waiting.style.display = "none"
       }
+      if(state[playerID].gameIsActive === false) {
+        gameNodes[playerID].gameBoard.classList.add('animate__animated', 'animate__shakeX')
+      }
 
       //render lives
       Array.from(gameNodes.pState[playerID].lives.children).forEach( (lifeImg, idx) => {

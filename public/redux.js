@@ -6,7 +6,9 @@ const initialState = {
     spaceShipPosition: 0,
     asteroidArray: [],
     lives: 3,
-    gameIsOver: false
+    gameIsOver: false,
+    scoreSent: false,
+    deathAnimation: false
   },
   remote: {},
   waitingForPlayers: false,
@@ -17,6 +19,7 @@ const initialState = {
 
 function gameIsActive (state) {
   if(state.local.gameIsOver === false &&
+     state.local.deathAnimation === false &&
      state.waitingForPlayers === false &&
      state.matchIsOver === false) {
        return true
@@ -140,8 +143,11 @@ function reducer (oldState, action) {
       newState.highScores = action.highScores
     }
 
+    if(action.type === 'TICK_REMOTE') {
+      newState.remote = action.remoteState
+    }
+
     if(action.type === 'TICK') {
-        newState.remote = action.remoteState
         newState.local.asteroidArray = newState.local.asteroidArray.reduce(function(newAsteroids, asteroid) {
             // Only keep this asteroid if is less than maxAsteroidXValue
             if(asteroid.posX < maxAsteroidXValue) {
@@ -155,12 +161,8 @@ function reducer (oldState, action) {
         },[])
 
         if(hasSpaceshipCollided(newState.local)) {
-            newState.local.spaceShipPosition = 0
             newState.local.lives = newState.local.lives - 1
-            if(newState.local.lives === 0) {
-                newState.local.gameIsOver = true
-                newState.local.asteroidArray = []
-            }
+            newState.local.deathAnimation = true
         }
     }
 
@@ -178,6 +180,19 @@ function reducer (oldState, action) {
         if(newState.local.spaceShipPosition < 0) {
             newState.local.spaceShipPosition = 0
         }
+    }
+
+    else if (action.type === "SENT_SCORE") {
+      newState.local.scoreSent = true
+    }
+
+    else if (action.type === "COMPLETE_DEATH_ANIMATION") {
+      newState.local.deathAnimation = false
+      newState.local.spaceShipPosition = 0
+      if(newState.local.lives === 0) {
+          newState.local.gameIsOver = true
+          newState.local.asteroidArray = []
+      }
     }
 
     return newState

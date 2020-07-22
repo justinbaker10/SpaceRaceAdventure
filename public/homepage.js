@@ -1,12 +1,17 @@
 
-console.log('here')
-
-
-
 document.getElementById('two-player-button').addEventListener('click',clickHomepagePlayer)
 document.getElementById('single-player-button').addEventListener('click',clickHomepagePlayer)
 document.getElementById('playerName').addEventListener('input',updatePlayerName)
 document.getElementById('gameNumber').addEventListener('input',updateGameNumber)
+
+const gameID = new URLSearchParams(document.location.search.substring(1)).get('game')
+
+if(gameID) {
+  document.getElementById('two-player-button').classList.add("selected")
+  document.querySelector('.game-form').style.display = 'block'
+  document.querySelector('.game-number-input').style.display = "block"
+  document.getElementById('gameNumber').value = gameID
+}
 
 function clickHomepagePlayer (playerButtonClickEvent) {
   document.getElementById('two-player-button').classList.remove("selected")
@@ -40,8 +45,7 @@ function updateGameNumber (e) {
 function updateGoLink () {
   const pName = document.getElementById('playerName').value
   const inputGameNumber = document.getElementById('gameNumber').value
-  const randomGameNumber = Math.floor(Math.random()*10000).toString().padStart(4,'0')
-  const validGameNumber = isValidGame(inputGameNumber) ? inputGameNumber : randomGameNumber
+  const validGameNumber = getValidOrSetRandomGame(inputGameNumber)
   const modeSelected = modeSelect()
 
   if(pName && modeSelected) {
@@ -51,13 +55,14 @@ function updateGoLink () {
   }
 }
 
-function isValidGame (gameNumber) {
-  return gameNumber.split('').reduce( (acc,char) => {
-    if(char.match(/\d/)) {
-      return acc && true
-    }
-    return false
-  },true)
+function getValidOrSetRandomGame (inputNumber) {
+  const randomGameNumber = Math.floor(Math.random()*10000).toString().padStart(4,'0')
+  if( inputNumber.length === 4 &&
+      [...inputNumber.matchAll(/[0-9]/g)].length === 4) {
+        return inputNumber}
+  else {
+    return randomGameNumber
+  }
 }
 
 function modeSelect () {

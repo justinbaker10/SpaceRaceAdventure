@@ -3,9 +3,17 @@ const app = express()
 const serv = require('http').Server(app)
 const port = 3333
 
-app.use('/', express.static('public'))
+const startTime = new Date()
 
-serv.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
+app.use('/', express.static(__dirname + '/public'))
+
+app.get('/uptime', (req,res,err) => {
+  const timeDiff = new Date() - startTime
+  const days = Math.floor(timeDiff/10/3600/24)/100
+  res.send(`Uptime: ${days} days`)
+})
+
+serv.listen(port, () => console.log(`SpaceRace listening at http://localhost:${port}`))
 
 const io = require('socket.io')(serv,{})
 

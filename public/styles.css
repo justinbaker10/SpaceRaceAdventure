@@ -80,6 +80,62 @@ body {
     border-radius: 50%;
     position: absolute;
     bottom: 0px;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+
+.spaceship.death-animation {
+  animation-name: shakeandfall;
+}
+
+@keyframes shakeandfall {
+  0% {
+    transform: translateX(0);
+  }
+
+  5% {
+    transform: translateX(20px);
+  }
+
+  10% {
+    transform: translateX(-20px);
+  }
+
+  15% {
+    transform: translateX(15px);
+  }
+
+  20% {
+    transform: translateX(-15px);
+  }
+
+  25% {
+    transform: translateX(10px);
+  }
+
+  30% {
+    transform: translateX(-10px);
+  }
+
+  35% {
+    transform: translateX(5px);
+  }
+
+  40% {
+    transform: translateX(-5px);
+  }
+
+  45% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateY(600px);
+  }
 }
 
 .scorecard {
@@ -283,6 +339,15 @@ hr {
 
 .dot3 {
   animation-delay: 1.33s;
+}
+
+h2.waiting {
+  font-size: 1.8em;
+}
+
+#waiting-game-number {
+  text-decoration: underline;
+  color: rgba(255,255,255,.5);
 }
 
 @keyframes pulse {

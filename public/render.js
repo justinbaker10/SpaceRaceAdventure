@@ -1,10 +1,14 @@
 const socket = io()
 let remoteState = {}
-let scoreSent = false
 
 const gameID = new URLSearchParams(document.location.search.substring(1)).get('game')
 const playerNameBeforeTrunc = new URLSearchParams(document.location.search.substring(1)).get('name')
 const playerName = playerNameBeforeTrunc ? playerNameBeforeTrunc.substring(0,8) : null
+
+if(gameID) {
+  document.getElementById('waiting-game-number').innerHTML = gameID
+  document.getElementById('game-share-link').href = "/?game=" + gameID
+}
 
 const gameNodes = {
   pState: {
@@ -26,6 +30,11 @@ function buildPlayerNodeCollection (playerDesignation) {
   }
 }
 
+gameNodes.pState.local.spaceShip.addEventListener('animationend',(e)=>{
+  store.dispatch({type: "COMPLETE_DEATH_ANIMATION"})
+  e.target.classList.remove('death-animation')
+})
+
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
 const theInitialAction = {type: 'INIT',gameID: gameID,playerName: playerName}
@@ -35,7 +44,7 @@ store.dispatch(theInitialAction)
 window.addEventListener('keydown', (e) => {
   const state = store.getState()
 
-  if(gameIsActive(state) === true) {
+  if(gameIsActive(state)) {
     if (e.key === 'ArrowUp') {
         store.dispatch({type: 'MOVE_UP'})
     }
@@ -47,10 +56,14 @@ window.addEventListener('keydown', (e) => {
 
 // Rendering data (state) from the store to update game
 function render () {
+
+
     const state = store.getState()
     if(state.multiplayer) {
       document.getElementById('root').classList.add('two-player')
     }
+
+    //do these for each player
     Object.keys(gameNodes.pState).forEach(playerID => {
       if(gameNodes.pState[playerID].name.innerHTML !== state[playerID].name && state[playerID].name) {
         gameNodes.pState[playerID].name.innerHTML = state[playerID].name
@@ -58,31 +71,18 @@ function render () {
       gameNodes.pState[playerID].spaceShip.style.bottom = state[playerID].spaceShipPosition + 'px'
       gameNodes.pState[playerID].score.innerHTML = (typeof state[playerID].score === "number") ? state[playerID].score : ""
       gameNodes.pState[playerID].asteroidContainer.innerHTML = (state[playerID].asteroidArray) ? state[playerID].asteroidArray.map(renderAsteroid).join('') : ""
-      if(state[playerID].gameIsOver) {
-        gameNodes.pState[playerID].gameOver.style.display = "initial"
-        if (playerID === "local") {
-          if(!scoreSent) {
-            scoreSent = true
-            socket.emit('scoreInfo',{
-              name: state.local.name,
-              score: state.local.score
-            })
-          }
-          if(state.highScores) {
-            gameNodes.pState[playerID].gameOver.querySelector('.high-scores').innerHTML = "<p style='text-decoration:underline;margin-bottom:10px'>High Scores</p>" + state.highScores.map(renderHighScore).join('')
-            console.log(gameNodes.pState[playerID].gameOver.querySelector('.high-scores').innerHTML)
-          }
-        }
+      if(state[playerID].gameIsOver && state.highScores) {
+        gameNodes.pState[playerID].gameOver.style.display = "block"
       } else {
         gameNodes.pState[playerID].gameOver.style.display = "none"
       }
       if(state.waitingForPlayers) {
-        gameNodes.waiting.style.display = "initial"
+        gameNodes.waiting.style.display = "block"
       } else {
         gameNodes.waiting.style.display = "none"
       }
-      if(state[playerID].gameIsActive === false) {
-        gameNodes[playerID].gameBoard.classList.add('animate__animated', 'animate__shakeX')
+      if(state[playerID].deathAnimation) {
+        gameNodes.pState[playerID].spaceShip.classList.add('death-animation')
       }
 
       //render lives
@@ -94,6 +94,19 @@ function render () {
           }
       })
     })
+
+    if (state.local.gameIsOver) {
+      if(!state.local.scoreSent) {
+        store.dispatch({type: "SENT_SCORE"})
+        socket.emit('scoreInfo',{
+          name: state.local.name,
+          score: state.local.score
+        })
+      }
+      if(state.highScores) {
+        gameNodes.pState.local.gameOver.querySelector('.high-scores').innerHTML = "<p style='text-decoration:underline;margin-bottom:10px'>High Scores</p>" + state.highScores.map(renderHighScore).join('')
+      }
+    }
 }
 
 function renderHighScore (scoreObj,idx) {
@@ -113,21 +126,20 @@ function renderAsteroid (asteroid) {
 }
 
 // Animation frame rate creates game timing
-requestAnimationFrame(tickClock);
+requestAnimationFrame(tickClock)
 function tickClock () {
   const state = store.getState()
-    store.dispatch({type: 'TICK',remoteState: remoteState})
-    if(gameIsActive(state)) {
-      socket.emit('statePush',{
-        state: {...store.getState().local},
-        gameID: gameID
-      })
-    }
-    requestAnimationFrame(tickClock)
+  if(gameIsActive(state)) {
+    store.dispatch({type: 'TICK'})
+    socket.emit('statePush',{
+      state: {...store.getState().local},
+      gameID: gameID
+    })
+  }
+  requestAnimationFrame(tickClock)
 }
 
 socket.on('startGame', () => {
-  console.log('gamestarting')
   store.dispatch({type: 'START_MULTIPLAYER'})
 })
 
@@ -136,7 +148,7 @@ socket.on('gameFull', () => {
 })
 
 socket.on('remoteStatePush', (state) => {
-  remoteState = state
+  store.dispatch({type: 'TICK_REMOTE'})
 })
 
 socket.on('highScores', highScores => {

@@ -35,6 +35,10 @@ gameNodes.pState.local.spaceShip.addEventListener('animationend',(e)=>{
   e.target.classList.remove('death-animation')
 })
 
+gameNodes.pState.remote.spaceShip.addEventListener('animationend',(e)=>{
+  e.target.classList.remove('death-animation')
+})
+
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
 const theInitialAction = {type: 'INIT',gameID: gameID,playerName: playerName}
@@ -65,7 +69,7 @@ function render () {
 
     //do these for each player
     Object.keys(gameNodes.pState).forEach(playerID => {
-      if(gameNodes.pState[playerID].name.innerHTML !== state[playerID].name && state[playerID].name) {
+      if(state[playerID].name && gameNodes.pState[playerID].name.innerHTML !== state[playerID].name) {
         gameNodes.pState[playerID].name.innerHTML = state[playerID].name
       }
       gameNodes.pState[playerID].spaceShip.style.bottom = state[playerID].spaceShipPosition + 'px'
@@ -148,7 +152,7 @@ socket.on('gameFull', () => {
 })
 
 socket.on('remoteStatePush', (state) => {
-  store.dispatch({type: 'TICK_REMOTE'})
+  store.dispatch({type: 'TICK_REMOTE',remoteState: state})
 })
 
 socket.on('highScores', highScores => {

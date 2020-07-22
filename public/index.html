@@ -12,82 +12,28 @@
     <link rel="icon" type="image/svg" href="img/spaceship.svg">
 </head>
 <body>
-  <nav class="dev-tools">
-    <button class="toggle-two-player">Two Player</button>
-  </nav>
-    <div id="root">
-      <div class="wholegame local">
-          <div class="gameboard">
-              <div class="gameoverbox">
-                  <div class="gameover" style="display: none;">
-                      <h1 class="GOheading">Game Over!</h1>
-                      <p>So much universe, and so little time. - Terry Pratchett</p>
-                      <div class="gamebuttons">
-                      <button type="button" class="btn btn-outline-dark"><a href="homepage.html" class="GObutton">Main Menu</a></button>
-                      <button type="button" class="btn btn-outline-dark"><a href="index.html" class="GObutton">Restart</a></button>
-                      </div>
-                  </div>
+    <div class="menucontainer">
+        <div class="mymenu">
+            <h1 class="gametitle">Justin's SpaceRace Adventure</h1>
+            <div class="startbutton">
+              <button id="single-player-button" type="button" class="btn btn-outline-dark">Solo</button>
+              <button id="two-player-button" type="button" class="btn btn-outline-dark">Two Player</button>
+            </div>
+            <div class='game-form' style='display:none'>
+              <div>
+                <span>Name:</span>
+                <input id="playerName" name="playerName">
+                &nbsp;
               </div>
-              <div class="asteroid-box"></div>
-                <div class="ship-box"></div>
-              <div class="asteroid-container"></div>
-              <div class="spaceship-container">
-                  <div class="spaceship"><img src="img/spaceship.svg"></div>
+              <div class="game-number-input" style="display:none">
+                <span>Game #:</span>
+                <input id="gameNumber" name="gameNumber" placeholder="0000-9999">
+                &nbsp;
               </div>
-          </div>
-          <div class="gameinfo">
-              <div class="scoreboard">
-                  <p class="scoretitle">Level</p><hr class="scoreline">
-                  <div class="scorecard"><p>0</h1></div>
-              </div>
-              <div class="livesboard">
-                  <p class="scoretitle">Lives</p><hr class="scoreline">
-                  <div class="lives">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="wholegame remote">
-          <div class="gameboard">
-              <div class="gameoverbox">
-                  <div class="gameover" style="display: none;">
-                      <h1 class="GOheading">Game Over!</h1>
-                      <p>So much universe, and so little time. - Terry Pratchett</p>
-                      <div class="gamebuttons">
-                      <button type="button" class="btn btn-outline-dark"><a href="homepage.html" class="GObutton">Main Menu</a></button>
-                      <button type="button" class="btn btn-outline-dark"><a href="index.html" class="GObutton">Restart</a></button>
-                      </div>
-                  </div>
-              </div>
-              <div class="asteroid-box"></div>
-                <div class="ship-box"></div>
-              <div class="asteroid-container"></div>
-              <div class="spaceship-container">
-                  <div class="spaceship"><img src="img/spaceship.svg"></div>
-              </div>
-          </div>
-          <div class="gameinfo">
-              <div class="scoreboard">
-                  <p class="scoretitle">Level</p><hr class="scoreline">
-                  <div class="scorecard"><p>0</h1></div>
-              </div>
-              <div class="livesboard">
-                  <p class="scoretitle">Lives</p><hr class="scoreline">
-                  <div class="lives">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                    <img class="life-indicator" src="img/spaceship.svg">
-                  </div>
-              </div>
-          </div>
-      </div>
+              <a id="play-game"><button type="button" class="btn btn-outline-dark">Go!</button></a>
+            </div>
+        </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
-    <script src="redux.js"></script>
-    <script src="render.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="homepage.js"></script>
 </body>
 </html>

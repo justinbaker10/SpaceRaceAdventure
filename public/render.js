@@ -82,8 +82,8 @@ function render () {
       } else {
         gameNodes.pState[playerID].gameOver.style.display = "none"
       }
-      
-      if(levelMessages[state[playerID].score]) {
+
+      if(levelMessages[state[playerID].score] && playerID == "local") {
         gameNodes.pState[playerID].messagesBox.style.display = "block"
         gameNodes.pState[playerID].messagesBox.innerHTML = levelMessages[state[playerID].score]
       } else {

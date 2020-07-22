@@ -75,7 +75,7 @@ function render () {
       gameNodes.pState[playerID].spaceShip.style.bottom = state[playerID].spaceShipPosition + 'px'
       gameNodes.pState[playerID].score.innerHTML = (typeof state[playerID].score === "number") ? state[playerID].score : ""
       gameNodes.pState[playerID].asteroidContainer.innerHTML = (state[playerID].asteroidArray) ? state[playerID].asteroidArray.map(renderAsteroid).join('') : ""
-      if(state[playerID].gameIsOver && state.highScores) {
+      if(state[playerID].gameIsOver && state.highScores || state[playerID].gameIsOver && playerID === "remote") {
         gameNodes.pState[playerID].gameOver.style.display = "block"
       } else {
         gameNodes.pState[playerID].gameOver.style.display = "none"
@@ -135,6 +135,13 @@ function tickClock () {
   const state = store.getState()
   if(gameIsActive(state)) {
     store.dispatch({type: 'TICK'})
+    socket.emit('statePush',{
+      state: {...store.getState().local},
+      gameID: gameID
+    })
+  }
+
+  if (state.local.gameIsOver) {
     socket.emit('statePush',{
       state: {...store.getState().local},
       gameID: gameID

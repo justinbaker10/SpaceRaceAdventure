@@ -6,6 +6,7 @@ console.log('here')
 document.getElementById('two-player-button').addEventListener('click',clickHomepagePlayer)
 document.getElementById('single-player-button').addEventListener('click',clickHomepagePlayer)
 document.getElementById('playerName').addEventListener('input',updatePlayerName)
+document.getElementById('gameNumber').addEventListener('input',updateGameNumber)
 
 function clickHomepagePlayer (playerButtonClickEvent) {
   document.getElementById('two-player-button').classList.remove("selected")
@@ -51,7 +52,7 @@ function updateGoLink () {
 }
 
 function isValidGame (gameNumber) {
-  return gameNumber.split('').reduce(acc,char=> {
+  return gameNumber.split('').reduce( (acc,char) => {
     if(char.match(/\d/)) {
       return acc && true
     }

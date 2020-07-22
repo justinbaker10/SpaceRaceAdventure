@@ -22,7 +22,9 @@ function buildPlayerNodeCollection (playerDesignation) {
     score: document.querySelector(`.${playerDesignation} .scorecard>p`),
     lives: document.querySelector(`.${playerDesignation} .lives`),
     gameOver: document.querySelector(`.${playerDesignation} .gameover`),
-    gameBoard: document.querySelector(`.${playerDesignation} .gameboard`)
+    gameBoard: document.querySelector(`.${playerDesignation} .gameboard`),
+    messagesBox: document.querySelector(`.${playerDesignation} .messagesbox`),
+    gameMessages: document.querySelector(`.${playerDesignation} .gameMessages`)
   }
 }
 
@@ -76,6 +78,14 @@ function render () {
       } else {
         gameNodes.pState[playerID].gameOver.style.display = "none"
       }
+      
+      if(levelMessages[state[playerID].score]) {
+        gameNodes.pState[playerID].messagesBox.style.display = "block"
+        gameNodes.pState[playerID].messagesBox.innerHTML = levelMessages[state[playerID].score]
+      } else {
+        gameNodes.pState[playerID].messagesBox.style.display = "none"
+      }
+
       if(state.waitingForPlayers) {
         gameNodes.waiting.style.display = "initial"
       } else {

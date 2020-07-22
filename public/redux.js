@@ -15,6 +15,16 @@ const initialState = {
   highScores: null
 }
 
+const levelMessages = {
+    0: `Use arrows to move Spaceship!`,
+    5: `Pretty easy so far? Just wait..`,
+    15: `How's it going?`,
+    25: `Not bad...`,
+    40: `You're cheating right?`,
+    80: `WTF`,
+    100: `Okay calm down man`
+}
+
 function gameIsActive (state) {
   if(state.local.gameIsOver === false &&
      state.waitingForPlayers === false &&

@@ -1,5 +1,5 @@
 {
-  "name": "justinsspaceraceadventure",
+  "name": "spaceraceadventure",
   "version": "1.0.0",
   "description": "race past asteroids and save the future!",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/justinbaker10/JustinsSpaceRaceAdventure.git"
+    "url": "git+https://github.com/justinbaker10/SpaceRaceAdventure.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/justinbaker10/JustinsSpaceRaceAdventure/issues"
+    "url": "https://github.com/justinbaker10/SpaceRaceAdventure/issues"
   },
-  "homepage": "https://github.com/justinbaker10/JustinsSpaceRaceAdventure#readme",
+  "homepage": "https://github.com/justinbaker10/SpaceRaceAdventure#readme",
   "dependencies": {
     "express": "^4.17.1",
     "socket.io": "^2.3.0"

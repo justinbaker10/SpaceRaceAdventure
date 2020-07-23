@@ -7,7 +7,9 @@ A multiplayer arcade game where you play a lonely spaceship from a far away gala
 
 - HTML
 - CSS
-- Redux.js
+- Redux
+- Node.js
+- Express
 - Socket.io
 
 ## Demo
@@ -59,7 +61,7 @@ else if(action.type === 'MOVE_DOWN') {
 
 <b>Asteroids</b>
 
-The number of asteroids generated is based on the level you are on. The size, as well as the X and Y positions of the asteroids are generated at random using Math.floor(Math.random()). 
+The number of asteroids generated is based on the level you are on. The size, as well as the X and Y positions of the asteroids are generated at random using `Math.floor(Math.random())`.
 
 ```
 
@@ -69,7 +71,7 @@ function createNewAsteroid () {
         size: size,
         posY: Math.floor(Math.random() * 500) + 60,
         posX: Math.floor(Math.random() * 500),
-        speed: -0.0465 * size + 5.465
+        speed: calcAsteroidSpeed(size)
     }
 }
 
@@ -107,7 +109,7 @@ function calcAsteroidSpeed (size) {
 
 ```
 
-The asteroids are then animated using requestAnimationFrame
+The asteroids are then animated using `requestAnimationFrame`
 
 ```
 
@@ -132,7 +134,7 @@ The collision engine, like any other, is based off of hitboxes. (In our case, ci
 
 ```
 
-function getSpaceshipBox (playerState) {
+function getSpaceshipHitBox (playerState) {
     const theRadius = widthOfSpaceship / 2
     return {
         radius: theRadius,
@@ -142,7 +144,7 @@ function getSpaceshipBox (playerState) {
 }
 
 
-function getAsteroidBox (playerState, asteroidIndex) {
+function getAsteroidHitBox (playerState, asteroidIndex) {
     const theAsteroid = playerState.asteroidArray[asteroidIndex]
     const theRadius = theAsteroid.size / 2
     return {
@@ -158,6 +160,15 @@ The game then checks for collisions every tick.
 
 ```
 
+if(hasSpaceshipCollided(newState.local)) {
+    newState.local.spaceShipPosition = 0
+    newState.local.lives = newState.local.lives - 1
+    if(newState.local.lives === 0) {
+        newState.local.gameIsOver = true
+        newState.local.asteroidArray = []
+    }
+}
+
 function hasOverlap (circle1, circle2) {
     var dx = circle1.x - circle2.x;
     var dy = circle1.y - circle2.y;
@@ -169,25 +180,11 @@ function hasOverlap (circle1, circle2) {
     return false
 }
 
-function getSpaceshipBox (playerState) {
-    const theRadius = widthOfSpaceship / 2
-    return {
-        radius: theRadius,
-        x: widthOfTheGameboard / 2,
-        y: topOfTheGameBoardpx - playerState.spaceShipPosition - theRadius
-    }
-}
-
-if(hasSpaceshipCollided(newState.local)) {
-    newState.local.spaceShipPosition = 0
-    newState.local.lives = newState.local.lives - 1
-    if(newState.local.lives === 0) {
-        newState.local.gameIsOver = true
-        newState.local.asteroidArray = []
-    }
-}
-
 ```
+
+## Cheat code
+
+If you REALLY find this game too difficult, or you want to challenge a friend to an unwinnable match, simply enter the Konami Code ftw.
 
 ## Created by
 

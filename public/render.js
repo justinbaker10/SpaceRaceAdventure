@@ -1,7 +1,5 @@
 const socket = io()
 let remoteState = {}
-let CHEAT_CODE = ""
-const GOD_MODE = "UUDDLRLRBA"
 
 const gameID = new URLSearchParams(document.location.search.substring(1)).get('game')
 const playerNameBeforeTrunc = new URLSearchParams(document.location.search.substring(1)).get('name')
@@ -72,6 +70,24 @@ window.addEventListener('keydown', (e) => {
     }
 }})
 
+const keyLog = new Array(10)
+const theCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"]
+window.addEventListener('keyup', (e) => {
+  keyLog.push(e.key)
+  keyLog.shift()
+
+  if((()=>{
+    for(let i=0;i<theCode.length;i++) {
+      if (keyLog[i] !== theCode[i])  return false
+    }
+    return true
+  })()) {
+    store.dispatch({type:"CHEAT"})
+    console.log("God Mode enabled. Are you proud of yourself?")
+    theCode.push("disable code")
+  }
+})
+
 // Rendering data (state) from the store to update game
 function render () {
 
@@ -97,7 +113,7 @@ function render () {
 
           if(asteroid) { //if asteroidNode is still in state
             asteroidNode.style.left = `${asteroid.posX - asteroid.size}px`
-            if(CHEAT_CODE === GOD_MODE) {
+            if(state[playerID].cheatMode) {
               if(asteroid.posX > (widthOfTheGameboard/2 - widthOfSpaceship/2 - 5)) {
                 asteroidNode.style.bottom = '-200px'
               }

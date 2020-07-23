@@ -1,5 +1,7 @@
 const socket = io()
 let remoteState = {}
+let CHEAT_CODE = ""
+const GOD_MODE = "UUDDLRLRBA"
 
 const gameID = new URLSearchParams(document.location.search.substring(1)).get('game')
 const playerNameBeforeTrunc = new URLSearchParams(document.location.search.substring(1)).get('name')
@@ -90,14 +92,22 @@ function render () {
       const asteroidStateCopy = state[playerID].asteroidArray && deepCopy(state[playerID].asteroidArray)
 
       if(asteroidStateCopy) {
-        Array.from(gameNodes.pState[playerID].asteroidContainer.children).forEach( (astroidNode) => {
-          const asteroid = asteroidStateCopy[astroidNode.id]
+        Array.from(gameNodes.pState[playerID].asteroidContainer.children).forEach( (asteroidNode) => {
+          const asteroid = asteroidStateCopy[asteroidNode.id]
 
-          if(asteroid) { //if astroidNode is still in state
-            astroidNode.style.left = `${asteroid.posX - asteroid.size}px`
-            delete asteroidStateCopy[astroidNode.id]
-          } else { //if astroidNode should be deleted
-            astroidNode.remove()
+          if(asteroid) { //if asteroidNode is still in state
+            asteroidNode.style.left = `${asteroid.posX - asteroid.size}px`
+            if(CHEAT_CODE === GOD_MODE) {
+              if(asteroid.posX > (widthOfTheGameboard/2 - widthOfSpaceship/2 - 5)) {
+                asteroidNode.style.bottom = '-200px'
+              }
+              if(asteroid.posX > (widthOfTheGameboard/2 + widthOfSpaceship/2 + 5 + asteroid.size)) {
+                asteroidNode.style.bottom = `${asteroid.posY}px`
+              }
+            }
+            delete asteroidStateCopy[asteroidNode.id]
+          } else { //if asteroidNode should be deleted
+            asteroidNode.remove()
           }
 
         })

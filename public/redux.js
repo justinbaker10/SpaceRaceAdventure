@@ -177,7 +177,7 @@ function reducer (oldState, action) {
             return newAsteroids
         },{})
 
-        if(hasSpaceshipCollided(newState.local)) {
+        if(hasSpaceshipCollided(newState.local) && CHEAT_CODE !== GOD_MODE) {
             newState.local.lives = newState.local.lives - 1
             newState.local.deathAnimation = true
         }

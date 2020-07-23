@@ -37,9 +37,19 @@ gameNodes.pState.local.spaceShip.addEventListener('animationend',(e)=>{
   e.target.classList.remove('death-animation')
 })
 
+//needed due to the use of CSS animation to show ship dying.
+//clearing the animation has to happen on both local and remote
 gameNodes.pState.remote.spaceShip.addEventListener('animationend',(e)=>{
-  e.target.classList.remove('death-animation')
+  requestAnimationFrame(()=>(function removeRemoteDeathAnimation (e,count) {
+    if(count) {
+      requestAnimationFrame(()=>removeRemoteDeathAnimation(e,count-1))
+    } else {
+      e.target.classList.remove('death-animation')
+    }
+  })(e,4))
 })
+
+
 
 // "Subscribing" (updating) the store based on the render function
 store.subscribe(render)
@@ -76,7 +86,37 @@ function render () {
       }
       gameNodes.pState[playerID].spaceShip.style.bottom = state[playerID].spaceShipPosition + 'px'
       gameNodes.pState[playerID].score.innerHTML = (typeof state[playerID].score === "number") ? state[playerID].score : ""
-      gameNodes.pState[playerID].asteroidContainer.innerHTML = (state[playerID].asteroidArray) ? state[playerID].asteroidArray.map(renderAsteroid).join('') : ""
+
+      const asteroidStateCopy = state[playerID].asteroidArray && deepCopy(state[playerID].asteroidArray)
+
+      if(asteroidStateCopy) {
+        Array.from(gameNodes.pState[playerID].asteroidContainer.children).forEach( (astroidNode) => {
+          const asteroid = asteroidStateCopy[astroidNode.id]
+
+          if(asteroid) { //if astroidNode is still in state
+            astroidNode.style.left = `${asteroid.posX - asteroid.size}px`
+            delete asteroidStateCopy[astroidNode.id]
+          } else { //if astroidNode should be deleted
+            astroidNode.remove()
+          }
+
+        })
+
+        Object.values(asteroidStateCopy).forEach( (newAsteroid) => { //if asteroid needs to be added
+          gameNodes.pState[playerID].asteroidContainer.insertAdjacentHTML('beforeend',
+          `<img src="img/asteroid.svg"
+          id="${newAsteroid.id}"
+          class="asteroids"
+          style="left:${newAsteroid.posX - newAsteroid.size}px;
+          bottom:${newAsteroid.posY}px;
+          height:${newAsteroid.size}px;
+          width:${newAsteroid.size}px;">`)
+        })
+
+      } else {
+        gameNodes.pState[playerID].asteroidContainer.innerHTML = ""
+      }
+
       if(state[playerID].gameIsOver && state.highScores || state[playerID].gameIsOver && playerID === "remote") {
         gameNodes.pState[playerID].gameOver.style.display = "block"
       } else {
@@ -129,7 +169,9 @@ function renderHighScore (scoreObj,idx) {
 }
 
 // This function takes asteroid data and returns asteroid html
-function renderAsteroid (asteroid) {
+function renderAsteroid (asteroidContainer,asteroid) {
+    asteroidContainer.querySelector(`#${asteroid.id}`)
+
     return `<img
         src="img/asteroid.svg"
         class="asteroids"

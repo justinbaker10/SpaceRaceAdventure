@@ -4,7 +4,7 @@ const initialState = {
     name: '',
     score: 0,
     spaceShipPosition: 0,
-    asteroidArray: [],
+    asteroidArray: {},
     lives: 3,
     gameIsOver: false,
     scoreSent: false,
@@ -37,17 +37,24 @@ function gameIsActive (state) {
   return false
 }
 
-// Asteroid size of size 109 moves at .4, Asteroid of size 10 moves at 5
-// m = -0.0465
-// b = 5.465
+// Asteroid size of size 109 moves at .4, Asteroid of size 10 moves at 6
 function createNewAsteroid () {
     const size = Math.floor(Math.random() * 100) + 10
     return  {
+        id: UUID(),
         size: size,
         posY: Math.floor(Math.random() * 500) + 60,
         posX: Math.floor(Math.random() * 500),
-        speed: -0.0465 * size + 5.465
+        speed: calcAsteroidSpeed(size)
     }
+}
+
+//from S.O.
+function UUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
 
 function linearRegression (x1, x2, y1, y2) {
@@ -59,33 +66,35 @@ function linearRegression (x1, x2, y1, y2) {
 }
 
 function calcAsteroidSpeed (size) {
-    const minSpeed = 0.5
-    const maxSpeed = 4
+    const minSpeed = .5
+    const maxSpeed = 6
     const minSize = 10
     const maxSize = 109
-    const asteroidSpeedRegression = linearRegression(minSize, maxSize, minSpeed, maxSpeed)
+    const asteroidSpeedRegression = linearRegression(maxSize, minSize, minSpeed, maxSpeed)
 
     return asteroidSpeedRegression(size)
 }
 
 function createAsteroidArray (score) {
-    const asteroidArray = []
+    const asteroidArray = {}
     for (i = 0; i < score; i++) {
-        asteroidArray.push(createNewAsteroid())
+        const newAsteroid = createNewAsteroid()
+        asteroidArray[newAsteroid.id] = newAsteroid
     }
     return asteroidArray
 }
 
 function hasSpaceshipCollided (playerState) {
-    for(i = 0; i < playerState.asteroidArray.length; i++) {
-        if(hasOverlap(getSpaceshipBox(playerState), getAsteroidBox(playerState, i))) {
-            return true
-        }
+    const asteroidObjects = Object.values(playerState.asteroidArray)
+    for(let i = 0; i<asteroidObjects.length; i++) {
+      if(hasOverlap(getSpaceshipHitBox(playerState), getAsteroidHitBox(playerState, asteroidObjects[i].id))) {
+        return true
+      }
     }
     return false
 }
 
-function getSpaceshipBox (playerState) {
+function getSpaceshipHitBox (playerState) {
     const theRadius = widthOfSpaceship / 2
     return {
         radius: theRadius,
@@ -95,8 +104,8 @@ function getSpaceshipBox (playerState) {
 }
 
 
-function getAsteroidBox (playerState, asteroidIndex) {
-    const theAsteroid = playerState.asteroidArray[asteroidIndex]
+function getAsteroidHitBox (playerState, asteroidID) {
+    const theAsteroid = playerState.asteroidArray[asteroidID]
     const theRadius = theAsteroid.size / 2
     return {
         radius: theRadius,
@@ -124,7 +133,6 @@ const topOfTheGameBoardpx = 600;
 const widthOfTheGameboard = 600;
 const widthOfSpaceship = 50;
 const heightOfSpaceship = 50;
-const maxAsteroidXValue = widthOfTheGameboard + 200;
 
 // Updates game data (state)
 function reducer (oldState, action) {
@@ -158,17 +166,16 @@ function reducer (oldState, action) {
     }
 
     if(action.type === 'TICK') {
-        newState.local.asteroidArray = newState.local.asteroidArray.reduce(function(newAsteroids, asteroid) {
-            // Only keep this asteroid if is less than maxAsteroidXValue
-            if(asteroid.posX < maxAsteroidXValue) {
+        newState.local.asteroidArray = Object.values(newState.local.asteroidArray).reduce(function(newAsteroids, asteroid) {
+            if(asteroid.posX < widthOfTheGameboard + asteroid.size) {
                 asteroid.posX = asteroid.posX + asteroid.speed
-                newAsteroids.push(asteroid)
             }
-            if(asteroid.posX > maxAsteroidXValue) {
+            else {
                 asteroid.posX = 0
             }
+            newAsteroids[asteroid.id] = asteroid
             return newAsteroids
-        },[])
+        },{})
 
         if(hasSpaceshipCollided(newState.local)) {
             newState.local.lives = newState.local.lives - 1
@@ -201,7 +208,7 @@ function reducer (oldState, action) {
       newState.local.spaceShipPosition = 0
       if(newState.local.lives === 0) {
           newState.local.gameIsOver = true
-          newState.local.asteroidArray = []
+          newState.local.asteroidArray = {}
       }
     }
 
